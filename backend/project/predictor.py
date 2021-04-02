@@ -15,7 +15,10 @@ from project.d2predictor import VisualizationDemo
 from project.file_utils import download_file
 
 
-MODEL_DOWNLOAD_URL = "https://www.dropbox.com/sh/wgt9skz67usliei/AABPmqM77ERycAd87vubWc4Ua/model_final_trimmed.pth?dl=1"
+# MODEL_DOWNLOAD_URL = "https://www.dropbox.com/sh/wgt9skz67usliei/AABPmqM77ERycAd87vubWc4Ua/model_final_trimmed.pth?dl=1"
+
+# MODEL NAME: DLA_mask_rcnn_X_101_32x8d_FPN_3x 
+MODEL_DOWNLOAD_URL = "https://www.dropbox.com/sh/1098ym6vhad4zi6/AAD8Y-SVN6EbfAWEDYuZHG8xa/model_final_trimmed.pth?dl=1" 
 
 
 with open(pathlib.Path().parent / "model_config.yaml") as f:

@@ -5,5 +5,5 @@ categories:
   - "table"
   - "figure"
 
-cfg_file: DLA_mask_rcnn_R_101_FPN_3x.yaml
+cfg_file: DLA_mask_rcnn_X_101_32x8d_FPN_3x.yaml
 model_file: model_final_trimmed.pth
