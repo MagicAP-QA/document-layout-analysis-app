@@ -24,16 +24,27 @@ MODEL_DOWNLOAD_URL = "https://www.dropbox.com/sh/1098ym6vhad4zi6/AAD8Y-SVN6EbfAW
 with open(pathlib.Path().parent / "model_config.yaml") as f:
     model_config = yaml.full_load(f)
 
+classes =None
+cfg_file=None
+model_weights = None
+ 
+if not classes:
+    print("Loading classes")
+    classes = model_config["categories"]
 
-classes = model_config["categories"]
-cfg_file = model_config["cfg_file"]
-model_weights = model_config["model_file"]
+if not cfg_file:
+    print("Loading cfg_file")
+    cfg_file = model_config["cfg_file"]
 
-print(f"Loaded config: {cfg_file}")
-print(f"Loaded model: {model_weights}")
+if not model_weights:
+    print("Loading model_weights")
+    model_weights = model_config["model_file"]
+
 
 
 def prepare_predictor():
+    print(f"Loaded config: {cfg_file}")
+    print(f"Loaded model: {model_weights}")
     # create config
     cfg = get_cfg()
 
@@ -71,22 +82,23 @@ def extract_instances(instances):
     return boxes, pred_classes, scores, labels
 
 
-def make_predictions(image, return_json):
+def make_predictions(image, return_json, predictor):
+
     start_time = time.time()
 
     # image = image[:, :, ::-1]
-    predictions, vis_output = predictor.run_on_image(image)
+    predictions, _ = predictor.run_on_image(image)
 
     inference_time = int(time.time() - start_time)
     print(f"inference time: {datetime.timedelta(seconds=inference_time)}")
 
     boxes, pred_classes, scores, labels = extract_instances(predictions["instances"])
 
-    img = vis_output.get_image()
+    # img = vis_output.get_image()
 
     if return_json:
-        retval, buffer = cv2.imencode(".jpg", img)
-        jpg_as_text = base64.b64encode(buffer).decode("utf-8")
+        # retval, buffer = cv2.imencode(".jpg", img)
+        # jpg_as_text = base64.b64encode(buffer).decode("utf-8")
 
         total_time = int(time.time() - start_time)
 
@@ -98,12 +110,9 @@ def make_predictions(image, return_json):
                 "classes": classes,
             },
             "instances": len(boxes),
-            "img": jpg_as_text,
+            "img": "",
             "inference_time": f"{inference_time}s",
         }
         return json_data
     else:
-        return img
-
-
-predictor = prepare_predictor()
+        return ""
